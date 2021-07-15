@@ -1,13 +1,10 @@
-package com.mau.spring.model;
+package com.mau.spring.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-//TODO revisar nombre
 @Data
 @AllArgsConstructor
 public class AccesibleDTO {
-    private int numero
-            ;
     private boolean esAccesible;
 }

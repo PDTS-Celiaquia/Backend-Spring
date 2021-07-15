@@ -1,25 +1,34 @@
-package com.mau.spring.model;
+package com.mau.spring.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+import java.util.Set;
 
+@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Entity //entidad de persistencia
-public class Alimento {
+public class Receta {
     @Id
-    private Integer numero;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idReceta;
+
     private String nombre;
-    private String clasificacion; // carnes, cereales, etc. Son las diferentes tablas
-    private String genero_especie_variedad;//algunas tablas de alimento lo tienen
+
+    private String descripcion;
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Set<Ingrediente> ingredientes;
+
+    private Integer cantidadPlatos;
+
+    private String instrucciones;
 
     private double energia_kJ;
     private double agua;
@@ -44,14 +53,7 @@ public class Alimento {
     private double acidos_grasos_poliinsaturados;
     private double colesterol;
 
-    private Boolean esAccesible = null;
-    private String imagen;
 
-    public void setEsAccesible(Boolean esAccesible) {
-        this.esAccesible = esAccesible;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
+    private int cantidad_alimentos_accesibles;
+    private int cantidad_alimentos_no_accesibles;
 }

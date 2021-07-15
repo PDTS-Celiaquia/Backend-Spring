@@ -1,43 +1,31 @@
 package com.mau.spring.auth;
 
 import com.google.common.collect.ImmutableMap;
-import com.mau.spring.model.UsuarioWeb;
-import com.mau.spring.service.UsuarioWebAuthService;
-import com.mau.spring.service.UsuarioWebService;
+import com.mau.spring.repository.UsuarioWebRepository;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
 
-import static lombok.AccessLevel.PACKAGE;
-import static lombok.AccessLevel.PRIVATE;
-
 @Service
-@AllArgsConstructor(access = PACKAGE)
-@FieldDefaults(level = PRIVATE, makeFinal = true)
-final class TokenAuthenticationService implements UsuarioWebAuthService {
-    @NonNull
-    TokenService tokens;
-    @NonNull
-    UsuarioWebService users;
+@AllArgsConstructor
+public final class TokenAuthenticationService implements UsuarioWebAuthService {
+    private final JWTService tokenService;
+    private final UsuarioWebRepository usuarioWebService;
 
     @Override
-    public Optional<String> login(final String email, final String password) {
-        return users
-                .buscarPorEmail(email)
+    public Optional<String> login(String email, String password) {
+        return usuarioWebService.buscarPorEmail(email)
                 .filter(user -> Objects.equals(password, user.getPassword()))
-                .map(user -> tokens.expiring(ImmutableMap.of("email", email)));
+                .map(user -> tokenService.expiring(ImmutableMap.of("email", email)));
     }
 
     @Override
-    public Optional<UsuarioWeb> findByToken(final String token) {
-        return Optional
-                .of(tokens.verify(token))
+    public Optional<UsuarioWeb> findByToken(String token) {
+        return Optional.of(tokenService.verify(token))
                 .map(map -> map.get("email"))
-                .flatMap(users::buscarPorEmail);
+                .flatMap(usuarioWebService::buscarPorEmail);
     }
 
     @Override

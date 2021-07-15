@@ -1,9 +1,8 @@
 package com.mau.spring.repository;
 
 
-import com.mau.spring.model.Alimento;
+import com.mau.spring.model.entity.Alimento;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

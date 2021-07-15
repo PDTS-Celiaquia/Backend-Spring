@@ -1,83 +1,71 @@
 package com.mau.spring.controller;
 
 
-import com.mau.spring.model.Alimento;
-import com.mau.spring.model.AccesibleDTO;
-import com.mau.spring.model.AlimentoNotFoundException;
+import com.mau.spring.exception.AlimentoNotFoundException;
+import com.mau.spring.model.dto.AccesibleDTO;
+import com.mau.spring.model.entity.Alimento;
 import com.mau.spring.service.AlimentoService;
 import com.mau.spring.utils.FileUploadUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
-@RequestMapping("/alimento") //prefijo para todas las requests. o sea las que estan mapeadas  a / en realidad estan en /alimento/
-public class AlimentoController { //el controller es el frente al exterior, llama al service para interactuar con el modelo/ la persistencia
+@AllArgsConstructor
+@RequestMapping("/alimento")
+public class AlimentoController {
+    public static final String PUBLIC_IMG_ALIMENTOS = "public/img/alimentos/";
 
     private final AlimentoService alimentoService;
 
-    @Autowired
-    public AlimentoController(AlimentoService alimentoService) {
-        this.alimentoService = alimentoService;
-    }
-
     @GetMapping("/")
-    public List<Alimento> getAll(@RequestParam(required = false) String name){
-        return alimentoService.getAll(name);
+    public ResponseEntity<?> getAll(@RequestParam(required = false) String name) {
+        return ResponseEntity.ok(alimentoService.getAll(name));
     }
 
     @GetMapping("/{alimentoId}")
-    public Alimento getAlimentoById(@PathVariable Integer alimentoId){
-        try {
-            return alimentoService.get(alimentoId);
-        } catch (AlimentoNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El alimento solicitado no existe");
-        }
+    public ResponseEntity<?> getAlimentoById(@PathVariable Integer alimentoId) throws AlimentoNotFoundException {
+        return ResponseEntity.ok(alimentoService.get(alimentoId));
     }
 
     @PostMapping("/")
-    public void addAlimento(@RequestBody Alimento nuevoAlimento){
-        alimentoService.addAlimento(nuevoAlimento);
+    public ResponseEntity<?> addAlimento(@RequestBody Alimento nuevoAlimento) {
+        return ResponseEntity.ok(alimentoService.addAlimento(nuevoAlimento));
     }
 
     @PostMapping("/cargarTablas")
-    public void cargarTablas(){ //TODO: Parametrizar de donde vienen los .xls
+    public void cargarTablas() {
         alimentoService.cargarTablas();
     }
 
-    @PostMapping("/setAccesible")
-    public void setAccesible(@RequestBody AccesibleDTO accesibleDTO){
-        try {
-            alimentoService.setAccesible(accesibleDTO);
-        } catch (AlimentoNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El alimento a modificar no existe");
-        }
+    @PatchMapping("/setAccesible/{alimentoId}")
+    public ResponseEntity<?> setAccesible(@PathVariable Integer alimentoId, @RequestBody AccesibleDTO accesibleDTO) throws AlimentoNotFoundException {
+        return ResponseEntity.ok(alimentoService.setAccesible(alimentoId, accesibleDTO));
     }
 
-    @PostMapping("/setImagen")
-    public void setImagen(int numero, @RequestParam("image") MultipartFile multipartFile){
-        try {
-            String[] temp = StringUtils.cleanPath(multipartFile.getOriginalFilename()).split("\\.");
-            String extension = temp[temp.length-1];
+    @PostMapping("/setImagen/{alimentoId}")
+    public ResponseEntity<?> setImagen(@PathVariable Integer alimentoId, @RequestParam("image") MultipartFile multipartFile) throws AlimentoNotFoundException, IOException {
+        String[] temp = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename())).split("\\.");
+        String extension = temp[temp.length - 1];
 
-            String fileName = ""+numero+"."+extension;
-            String uploadDir = "public/img/alimentos/";
+        String fileName = alimentoId + "." + extension;
 
-            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+        FileUploadUtil.saveFile(PUBLIC_IMG_ALIMENTOS, fileName, multipartFile);
 
-            alimentoService.setImagen(numero, fileName);
-        } catch (AlimentoNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El alimento a modificar no existe");
-        }
-        catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "La imagen para este alimento no pudo ser guardada");
-        }
+        return ResponseEntity.ok(alimentoService.setImagen(alimentoId, fileName));
     }
 
 }

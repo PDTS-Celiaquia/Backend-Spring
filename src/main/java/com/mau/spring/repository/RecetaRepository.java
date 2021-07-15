@@ -1,6 +1,6 @@
 package com.mau.spring.repository;
 
-import com.mau.spring.model.Receta;
+import com.mau.spring.model.entity.Receta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

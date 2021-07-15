@@ -1,6 +1,6 @@
 package com.mau.spring;
 
-import com.mau.spring.model.UnidadDeMedida;
+import com.mau.spring.model.entity.UnidadDeMedida;
 import com.mau.spring.repository.UnidadesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;

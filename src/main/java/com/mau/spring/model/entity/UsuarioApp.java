@@ -1,13 +1,12 @@
-package com.mau.spring.model;
+package com.mau.spring.model.entity;
 
+import com.mau.spring.model.enums.FrecuenciaGluten;
 import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Date;
 

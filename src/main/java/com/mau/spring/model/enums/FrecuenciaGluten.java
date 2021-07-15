@@ -1,4 +1,4 @@
-package com.mau.spring.model;
+package com.mau.spring.model.enums;
 
 public enum FrecuenciaGluten {
     UNA_VEZ_AL_ANIO,

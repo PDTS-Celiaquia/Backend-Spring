@@ -1,9 +1,6 @@
 package com.mau.spring.auth;
 
-import com.mau.spring.service.UsuarioWebAuthService;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
-import lombok.experimental.FieldDefaults;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,15 +9,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-import static lombok.AccessLevel.PACKAGE;
-import static lombok.AccessLevel.PRIVATE;
-
 @Component
-@AllArgsConstructor(access = PACKAGE)
-@FieldDefaults(level = PRIVATE, makeFinal = true)
-final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
-    @NonNull
-    UsuarioWebAuthService auth;
+@AllArgsConstructor
+public final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
+    private final UsuarioWebAuthService usuarioWebAuthService;
 
     @Override
     protected void additionalAuthenticationChecks(final UserDetails d, final UsernamePasswordAuthenticationToken auth) {
@@ -28,15 +20,12 @@ final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticatio
     }
 
     @Override
-    protected UserDetails retrieveUser(final String email, final UsernamePasswordAuthenticationToken authentication) {
-        final Object token = authentication.getCredentials();
+    protected UserDetails retrieveUser(String email, UsernamePasswordAuthenticationToken authentication) {
+        Object token = authentication.getCredentials();
 
-        UserDetails resultado =Optional
-                .ofNullable(token)
+        return Optional.ofNullable(token)
                 .map(String::valueOf)
-                .flatMap(auth::findByToken)
+                .flatMap(usuarioWebAuthService::findByToken)
                 .orElseThrow(() -> new UsernameNotFoundException("Cannot find user with authentication token=" + token));
-
-        return resultado;
     }
 }

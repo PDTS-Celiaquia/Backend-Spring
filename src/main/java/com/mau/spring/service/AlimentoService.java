@@ -1,8 +1,8 @@
 package com.mau.spring.service;
 
-import com.mau.spring.model.AccesibleDTO;
-import com.mau.spring.model.Alimento;
-import com.mau.spring.model.AlimentoNotFoundException;
+import com.mau.spring.exception.AlimentoNotFoundException;
+import com.mau.spring.model.dto.AccesibleDTO;
+import com.mau.spring.model.entity.Alimento;
 import com.mau.spring.repository.AlimentoRepository;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -14,7 +14,9 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,8 +37,8 @@ public class AlimentoService {
         this.alimentoRepository = alimentoRepository;
     }
 
-    public void addAlimento(Alimento nuevaAlimento) {
-        alimentoRepository.save(nuevaAlimento);
+    public Alimento addAlimento(Alimento nuevaAlimento) {
+        return alimentoRepository.save(nuevaAlimento);
     }
 
     public List<Alimento> getAll(String name) {
@@ -46,33 +48,23 @@ public class AlimentoService {
             return alimentoRepository.findByNombre(name);
     }
 
-    public void setAccesible(AccesibleDTO accesibleDTO) throws AlimentoNotFoundException {
-        Optional<Alimento> optionalAlimento = alimentoRepository.findById(accesibleDTO.getNumero());
-        if (optionalAlimento.isPresent()) {
-            Alimento alimentoAModificar = optionalAlimento.get();
+    public Alimento setAccesible(Integer alimentoId, AccesibleDTO accesibleDTO) throws AlimentoNotFoundException {
+        Alimento alimento = alimentoRepository.findById(alimentoId).orElseThrow(AlimentoNotFoundException::new);
 
-            alimentoAModificar.setEsAccesible(accesibleDTO.isEsAccesible());
-            alimentoRepository.save(alimentoAModificar);
-        } else {
-            throw new AlimentoNotFoundException();
-        }
-
+        alimento.setEsAccesible(accesibleDTO.isEsAccesible());
+        return alimentoRepository.save(alimento);
     }
 
-    public void setImagen(int numeroAlimento, String filenameImagen) throws AlimentoNotFoundException {
-        Optional<Alimento> optionalAlimento = alimentoRepository.findById(numeroAlimento);
-        if (optionalAlimento.isPresent()) {
-            Alimento alimentoAModificar = optionalAlimento.get();
+    public Alimento setImagen(Integer alimentoId, String filenameImagen) throws AlimentoNotFoundException {
+        Alimento alimento = alimentoRepository.findById(alimentoId).orElseThrow(AlimentoNotFoundException::new);
 
-            alimentoAModificar.setImagen(filenameImagen);
-            alimentoRepository.save(alimentoAModificar);
-        } else {
-            throw new AlimentoNotFoundException();
-        }
+        alimento.setImagen(filenameImagen);
+        return alimentoRepository.save(alimento);
 
     }
 
     public void cargarTablas() {
+        //TODO: Parametrizar de donde vienen los .xls
         cargarTabla("Cereales", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Cereales.xls");
         cargarTabla("Vegetales", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Vegetales.xls");
         cargarTabla("Frutas", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Frutas.xls");
@@ -177,7 +169,7 @@ public class AlimentoService {
         HSSFSheet sheet = wb.getSheetAt(0);
 
         FormulaEvaluator formulaEvaluator = wb.getCreationHelper().createFormulaEvaluator();
-        HashMap<String,Integer> camposPresentes = new HashMap<>();
+        HashMap<String, Integer> camposPresentes = new HashMap<>();
         //sector leer la fila 5 para saber que columnas son las que hay
         HSSFRow fila5 = sheet.getRow(4);
         for (Cell cell : fila5) {
@@ -192,7 +184,7 @@ public class AlimentoService {
 
     private Double checkDouble(HashMap<String, Object> valores, String nutriente) {
         Object valor = valores.get(nutriente);
-        Double valorDouble;
+        double valorDouble;
         try {
             valorDouble = Double.parseDouble(valor.toString());
         } catch (NullPointerException | NumberFormatException e) {

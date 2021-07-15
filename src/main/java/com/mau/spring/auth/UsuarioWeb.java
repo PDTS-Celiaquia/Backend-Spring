@@ -1,4 +1,4 @@
-package com.mau.spring.model;
+package com.mau.spring.auth;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,13 +23,13 @@ import static java.util.Objects.requireNonNull;
 public class UsuarioWeb implements UserDetails {
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
-    private String nombre;
-    private String apellido;
-    private String email;
-    private String password; //todo investigar
-    private Date fecha_alta;
-    private Date fecha_baja; //nulo en caso de cuenta activa
+    String id;
+    String nombre;
+    String apellido;
+    String email;
+    String password; //todo investigar
+    Date fecha_alta;
+    Date fecha_baja; //nulo en caso de cuenta activa
 
     @JsonCreator
     public UsuarioWeb(@JsonProperty("id") String id,

@@ -1,4 +1,4 @@
-package com.mau.spring.model;
+package com.mau.spring.model.dto;
 
 
 import lombok.AllArgsConstructor;

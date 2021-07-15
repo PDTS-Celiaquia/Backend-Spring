@@ -9,7 +9,6 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.compression.GzipCompressionCodec;
-import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,38 +19,34 @@ import java.util.Map;
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 import static io.jsonwebtoken.impl.TextCodec.BASE64;
 import static java.util.Objects.requireNonNull;
-import static lombok.AccessLevel.PRIVATE;
 import static org.apache.commons.lang3.StringUtils.substringBeforeLast;
 
 @Service
-@FieldDefaults(level = PRIVATE, makeFinal = true)
-final class JWTTokenService implements Clock, TokenService {
+public final class JWTService implements Clock {
     private static final String DOT = ".";
     private static final GzipCompressionCodec COMPRESSION_CODEC = new GzipCompressionCodec();
 
-    String issuer;
-    int expirationSec;
-    int clockSkewSec;
-    String secretKey;
+    private final String issuer;
+    private final int expirationSec;
+    private final int clockSkewSec;
+    private final String secretKey;
 
-    JWTTokenService(
+    public JWTService(
                     @Value("${jwt.issuer:PDTS-Celiaquia}") final String issuer,
                     @Value("${jwt.expiration-sec:86400}") final int expirationSec,
                     @Value("${jwt.clock-skew-sec:300}") final int clockSkewSec,
                     @Value("${jwt.secret:3892ry23879ru2389ru93ry}") final String secret) {
         super();
         this.issuer = requireNonNull(issuer);
-        this.expirationSec = requireNonNull(expirationSec);
-        this.clockSkewSec = requireNonNull(clockSkewSec);
+        this.expirationSec = expirationSec;
+        this.clockSkewSec = clockSkewSec;
         this.secretKey = BASE64.encode(requireNonNull(secret));
     }
 
-    @Override
     public String permanent(final Map<String, String> attributes) {
         return newToken(attributes, 0);
     }
 
-    @Override
     public String expiring(final Map<String, String> attributes) {
         return newToken(attributes, expirationSec);
     }
@@ -77,11 +72,9 @@ final class JWTTokenService implements Clock, TokenService {
                 .builder()
                 .setClaims(claims)
                 .signWith(HS256, secretKey)
-                .compressWith(COMPRESSION_CODEC)
                 .compact();
     }
 
-    @Override
     public Map<String, String> verify(final String token) {
         final JwtParser parser = Jwts
                 .parser()
@@ -92,7 +85,6 @@ final class JWTTokenService implements Clock, TokenService {
         return parseClaims(() -> parser.parseClaimsJws(token).getBody());
     }
 
-    @Override
     public Map<String, String> untrusted(final String token) {
         final JwtParser parser = Jwts
                 .parser()

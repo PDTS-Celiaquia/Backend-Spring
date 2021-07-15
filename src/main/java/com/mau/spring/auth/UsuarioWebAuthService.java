@@ -1,6 +1,4 @@
-package com.mau.spring.service;
-
-import com.mau.spring.model.UsuarioWeb;
+package com.mau.spring.auth;
 
 import java.util.Optional;
 
