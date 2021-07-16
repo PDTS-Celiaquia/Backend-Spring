@@ -3,12 +3,7 @@ package com.mau.spring.auth;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Clock;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.impl.compression.GzipCompressionCodec;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +19,6 @@ import static org.apache.commons.lang3.StringUtils.substringBeforeLast;
 @Service
 public final class JWTService implements Clock {
     private static final String DOT = ".";
-    private static final GzipCompressionCodec COMPRESSION_CODEC = new GzipCompressionCodec();
 
     private final String issuer;
     private final int expirationSec;
