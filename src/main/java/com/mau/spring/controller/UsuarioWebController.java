@@ -27,7 +27,7 @@ final class UsuarioWebController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UsuarioWebDTO body) {
-        usuarioWebRepository.guardar(new UsuarioWeb(body.getEmail(), body.getNombre(), body.getApellido(), body.getEmail(), body.getPassword()));
+        usuarioWebRepository.save(new UsuarioWeb(body.getNombre(), body.getApellido(), body.getEmail(), body.getPassword()));
         Optional<String> stringOptional = usuarioWebAuthService.login(body.getEmail(), body.getPassword());
         if (stringOptional.isPresent()){
             return ResponseEntity.ok(new TokenDTO(stringOptional.get()));

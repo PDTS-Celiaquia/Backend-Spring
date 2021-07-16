@@ -16,7 +16,7 @@ public final class TokenAuthenticationService implements UsuarioWebAuthService {
 
     @Override
     public Optional<String> login(String email, String password) {
-        return usuarioWebService.buscarPorEmail(email)
+        return usuarioWebService.findByEmail(email)
                 .filter(user -> Objects.equals(password, user.getPassword()))
                 .map(user -> tokenService.expiring(ImmutableMap.of("email", email)));
     }
@@ -25,7 +25,7 @@ public final class TokenAuthenticationService implements UsuarioWebAuthService {
     public Optional<UsuarioWeb> findByToken(String token) {
         return Optional.of(tokenService.verify(token))
                 .map(map -> map.get("email"))
-                .flatMap(usuarioWebService::buscarPorEmail);
+                .flatMap(usuarioWebService::findByEmail);
     }
 
     @Override
