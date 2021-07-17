@@ -1,35 +1,31 @@
 package edu.fi.mdp.celiacos.auth;
 
 import com.google.common.collect.ImmutableMap;
-import edu.fi.mdp.celiacos.repository.UsuarioWebRepository;
+import edu.fi.mdp.celiacos.service.UsuarioService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public final class TokenAuthenticationService implements UsuarioWebAuthService {
-    private final JWTService tokenService;
-    private final UsuarioWebRepository usuarioWebService;
+public final class TokenAuthenticationService {
+    private final JWTService jwtService;
+    private final UsuarioService usuarioService;
+    private final PasswordEncoder passwordEncoder;
 
-    @Override
     public Optional<String> login(String email, String password) {
-        return usuarioWebService.findByEmail(email)
-                .filter(user -> Objects.equals(password, user.getPassword()))
-                .map(user -> tokenService.expiring(ImmutableMap.of("email", email)));
+        return usuarioService.findByEmail(email)
+                .filter(user -> passwordEncoder.matches(password, user.getPassword()))
+                .map(user -> jwtService.expiring(
+                        ImmutableMap.of("email", user.getEmail(), "role", user.getRoleName())
+                ));
     }
 
-    @Override
-    public Optional<UsuarioWeb> findByToken(String token) {
-        return Optional.of(tokenService.verify(token))
+    public Optional<Usuario> findByToken(String token) {
+        return Optional.of(jwtService.verify(token))
                 .map(map -> map.get("email"))
-                .flatMap(usuarioWebService::findByEmail);
-    }
-
-    @Override
-    public void logout(final UsuarioWeb user) {
-        // Nothing to doy
+                .flatMap(usuarioService::findByEmail);
     }
 }

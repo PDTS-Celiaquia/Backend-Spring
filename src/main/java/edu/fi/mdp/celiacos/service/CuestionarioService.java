@@ -1,6 +1,6 @@
 package edu.fi.mdp.celiacos.service;
 
-import edu.fi.mdp.celiacos.auth.UsuarioWeb;
+import edu.fi.mdp.celiacos.auth.Usuario;
 import edu.fi.mdp.celiacos.model.dto.CuestionarioDTO;
 import edu.fi.mdp.celiacos.model.entity.Cuestionario;
 import edu.fi.mdp.celiacos.repository.CuestionarioRepository;
@@ -19,7 +19,7 @@ public class CuestionarioService {
     }
 
 
-    public Cuestionario nuevoCuestionario(CuestionarioDTO b, UsuarioWeb user) {
+    public Cuestionario nuevoCuestionario(CuestionarioDTO b, Usuario user) {
         return this.cuestionarioRepository.save(new Cuestionario(user, b));
     }
 

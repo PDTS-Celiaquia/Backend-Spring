@@ -2,21 +2,23 @@ package edu.fi.mdp.celiacos.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioWebDTO {
+@ToString
+public class UsuarioWebDTO extends LoginDTO {
     @NotBlank(message = "Falta nombre")
     private String nombre;
+
     @NotBlank(message = "Falta apellido")
     private String apellido;
-
-    @Email(message = "El campo email no puede estar vacío")
-    private String email;
-
-    @NotBlank(message = "Debe ingresar su contraseña")
-    private String password;
 }
