@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -26,7 +27,7 @@ final class UsuarioWebController {
     private final UsuarioWebRepository usuarioWebRepository;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UsuarioWebDTO body) {
+    public ResponseEntity<?> register(@RequestBody @Valid UsuarioWebDTO body) {
         usuarioWebRepository.save(new UsuarioWeb(body.getNombre(), body.getApellido(), body.getEmail(), body.getPassword()));
         Optional<String> stringOptional = usuarioWebAuthService.login(body.getEmail(), body.getPassword());
         if (stringOptional.isPresent()){
@@ -37,7 +38,7 @@ final class UsuarioWebController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO body) {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginDTO body) {
         Optional<String> stringOptional = usuarioWebAuthService.login(body.getEmail(), body.getPassword());
         if (stringOptional.isPresent()){
             return ResponseEntity.ok(new TokenDTO(stringOptional.get()));
