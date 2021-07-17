@@ -8,6 +8,7 @@ import edu.fi.mdp.celiacos.service.AlimentoService;
 import edu.fi.mdp.celiacos.utils.FileUploadUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -40,21 +41,25 @@ public class AlimentoController {
         return ResponseEntity.ok(alimentoService.get(alimentoId));
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
     @PostMapping("/")
     public ResponseEntity<?> addAlimento(@RequestBody Alimento nuevoAlimento) {
         return ResponseEntity.ok(alimentoService.addAlimento(nuevoAlimento));
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
     @PostMapping("/cargarTablas")
     public void cargarTablas() {
         alimentoService.cargarTablas();
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
     @PatchMapping("/setAccesible/{alimentoId}")
     public ResponseEntity<?> setAccesible(@PathVariable Integer alimentoId, @RequestBody AccesibleDTO accesibleDTO) throws AlimentoNotFoundException {
         return ResponseEntity.ok(alimentoService.setAccesible(alimentoId, accesibleDTO));
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
     @PostMapping("/setImagen/{alimentoId}")
     public ResponseEntity<?> setImagen(@PathVariable Integer alimentoId, @RequestParam("image") MultipartFile multipartFile) throws AlimentoNotFoundException, IOException {
         String[] temp = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename())).split("\\.");

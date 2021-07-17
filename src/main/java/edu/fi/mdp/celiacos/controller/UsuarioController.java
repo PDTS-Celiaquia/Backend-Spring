@@ -8,6 +8,7 @@ import edu.fi.mdp.celiacos.model.dto.UsuarioWebDTO;
 import edu.fi.mdp.celiacos.service.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,12 @@ final class UsuarioController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginDTO body) throws UnauthorizedException {
         return ResponseEntity.ok(usuarioService.login(body));
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/registerOperario")
+    public ResponseEntity<?> registerOperario(@RequestBody @Valid UsuarioWebDTO body) {
+        return ResponseEntity.ok(usuarioService.register(body, AuthorityEnum.OPERARIO));
     }
 }
 

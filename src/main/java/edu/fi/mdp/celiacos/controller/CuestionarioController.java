@@ -23,7 +23,7 @@ import javax.validation.Valid;
 public class CuestionarioController {
     private final CuestionarioService cuestionarioService;
 
-    @PreAuthorize("hasAuthority('PACIENTE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
     @GetMapping("")
     public ResponseEntity<?> getAll(
             @RequestParam(required = false) Boolean celiaco
@@ -31,6 +31,7 @@ public class CuestionarioController {
         return ResponseEntity.ok(cuestionarioService.getAll(celiaco));
     }
 
+    @PreAuthorize("hasAuthority('PACIENTE')")
     @PostMapping("/nuevo")
     public ResponseEntity<?> nuevo(
             @RequestBody @Valid CuestionarioDTO cuestionario,
