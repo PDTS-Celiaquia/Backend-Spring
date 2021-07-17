@@ -123,7 +123,7 @@ public class AlimentoService {
                     });
 
                     Alimento nuevoAlimento = new Alimento(
-                            ((Double) valores.get("nº")).intValue(),
+                            ((Double) valores.get("nº")).longValue(),
                             (String) valores.get("alimento"),
                             clasificacion,
                             checkString(valores, "genero_-_especie_-_variedad"),

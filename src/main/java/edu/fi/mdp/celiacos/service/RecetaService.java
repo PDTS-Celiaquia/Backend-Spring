@@ -27,8 +27,7 @@ public class RecetaService {
     }
 
     public Receta addReceta(Receta nuevaReceta) {
-        nuevaReceta.setIdReceta(null);
-
+        nuevaReceta.setId(null);
         return recetaRepository.save(nuevaReceta);
     }
 

@@ -28,13 +28,12 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
-@Table(name = "cuestionario")
+@Table(name = "cuestionarios")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Cuestionario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
