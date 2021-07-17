@@ -1,30 +1,31 @@
 package edu.fi.mdp.celiacos.auth;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.Value;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.ZonedDateTime;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import static java.util.Objects.requireNonNull;
-
 @Entity
 @Table(name = "usuarios_web")
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -40,26 +41,21 @@ public class UsuarioWeb implements UserDetails {
 
     private String email;
 
+    @JsonIgnore
     private String password; //todo investigar
 
+    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fecha_alta;
 
-    private Date fecha_baja; //nulo en caso de cuenta activa
+    private Date fecha_baja;
 
-    @JsonCreator
-    public UsuarioWeb(@JsonProperty("nombre") String nombre,
-                      @JsonProperty("apellido") String apellido,
-                      @JsonProperty("email") String email,
-                      @JsonProperty("password") String password) {
-        super();
+    public UsuarioWeb(String nombre, String apellido, String email, String password) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.password = password;
-        this.fecha_alta = new Date();
-        this.fecha_baja = null;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() { //TODO investigar
