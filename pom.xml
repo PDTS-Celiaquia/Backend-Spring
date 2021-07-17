@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>edu.fi.mdp.celiacos</groupId>
 	<artifactId>spring</artifactId>
-	<version>0.0.2</version>
+	<version>0.1.0</version>
 	<name>SpringBoot-Celiacos</name>
 
 	<properties>
