@@ -13,6 +13,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleAlimentoNotFoundException() {
         return ResponseEntity.badRequest().body("El alimento solicitado no existe");
     }
+    @ExceptionHandler(EmailNotAvailableException.class)
+    public ResponseEntity<?> handleEmailNotAvailableException() {
+        return ResponseEntity.badRequest().body("El email ya se encuentra en uso");
+    }
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<?> handleUnauthorizedException() {
