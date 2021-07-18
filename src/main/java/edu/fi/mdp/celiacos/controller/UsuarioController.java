@@ -2,6 +2,7 @@ package edu.fi.mdp.celiacos.controller;
 
 import edu.fi.mdp.celiacos.auth.AuthorityEnum;
 import edu.fi.mdp.celiacos.auth.Usuario;
+import edu.fi.mdp.celiacos.exception.EmailNotAvailableException;
 import edu.fi.mdp.celiacos.exception.UnauthorizedException;
 import edu.fi.mdp.celiacos.model.dto.LoginDTO;
 import edu.fi.mdp.celiacos.model.dto.PasswordDTO;
@@ -29,7 +30,9 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid UsuarioDTO usuarioDTO) throws UnauthorizedException {
+    public ResponseEntity<?> register(
+            @RequestBody @Valid UsuarioDTO usuarioDTO
+    ) throws EmailNotAvailableException, UnauthorizedException {
         usuarioService.register(usuarioDTO, AuthorityEnum.PACIENTE);
         return ResponseEntity.ok(usuarioService.login(usuarioDTO));
     }
@@ -47,7 +50,8 @@ public class UsuarioController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/registerOperario")
-    public ResponseEntity<?> registerOperario(@RequestBody @Valid UsuarioDTO usuarioDTO) throws UnauthorizedException {
+    public ResponseEntity<?> registerOperario(
+            @RequestBody @Valid UsuarioDTO usuarioDTO) throws EmailNotAvailableException {
         return ResponseEntity.ok(usuarioService.register(usuarioDTO, AuthorityEnum.OPERARIO));
     }
 }

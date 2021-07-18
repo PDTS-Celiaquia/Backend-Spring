@@ -4,6 +4,7 @@ import edu.fi.mdp.celiacos.auth.Authority;
 import edu.fi.mdp.celiacos.auth.AuthorityEnum;
 import edu.fi.mdp.celiacos.auth.TokenAuthenticationService;
 import edu.fi.mdp.celiacos.auth.Usuario;
+import edu.fi.mdp.celiacos.exception.EmailNotAvailableException;
 import edu.fi.mdp.celiacos.exception.UnauthorizedException;
 import edu.fi.mdp.celiacos.model.dto.LoginDTO;
 import edu.fi.mdp.celiacos.model.dto.PasswordDTO;
@@ -28,9 +29,9 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Usuario register(UsuarioDTO usuarioDTO, AuthorityEnum role) throws UnauthorizedException {
+    public Usuario register(UsuarioDTO usuarioDTO, AuthorityEnum role) throws EmailNotAvailableException {
         Authority authority = authorityRepository.findById(role).orElseThrow();
-        if (usuarioRepository.findByEmail(usuarioDTO.getEmail()).isPresent()) throw new UnauthorizedException();
+        if (usuarioRepository.findByEmail(usuarioDTO.getEmail()).isPresent()) throw new EmailNotAvailableException();
         Usuario usuario = new Usuario(usuarioDTO, authority);
         usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword()));
         return usuarioRepository.save(usuario);
