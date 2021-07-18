@@ -14,6 +14,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body("El alimento solicitado no existe");
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<?> handleUnauthorizedException() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email y contraseña invalidos");
+    }
+
     @ExceptionHandler(IOException.class)
     public ResponseEntity<?> handleIOException(IOException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

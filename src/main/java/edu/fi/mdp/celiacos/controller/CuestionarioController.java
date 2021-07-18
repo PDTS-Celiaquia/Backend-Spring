@@ -1,10 +1,11 @@
 package edu.fi.mdp.celiacos.controller;
 
-import edu.fi.mdp.celiacos.auth.UsuarioWeb;
+import edu.fi.mdp.celiacos.auth.Usuario;
 import edu.fi.mdp.celiacos.model.dto.CuestionarioDTO;
 import edu.fi.mdp.celiacos.service.CuestionarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 public class CuestionarioController {
     private final CuestionarioService cuestionarioService;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
     @GetMapping("")
     public ResponseEntity<?> getAll(
             @RequestParam(required = false) Boolean celiaco
@@ -29,10 +31,11 @@ public class CuestionarioController {
         return ResponseEntity.ok(cuestionarioService.getAll(celiaco));
     }
 
+    @PreAuthorize("hasAuthority('PACIENTE')")
     @PostMapping("/nuevo")
     public ResponseEntity<?> nuevo(
             @RequestBody @Valid CuestionarioDTO cuestionario,
-            @AuthenticationPrincipal UsuarioWeb user
+            @AuthenticationPrincipal Usuario user
     ) {
         return ResponseEntity.ok(cuestionarioService.nuevoCuestionario(cuestionario, user));
     }

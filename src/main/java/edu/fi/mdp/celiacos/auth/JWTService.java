@@ -10,6 +10,8 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -24,50 +26,33 @@ import static org.apache.commons.lang3.StringUtils.substringBeforeLast;
 public final class JWTService implements Clock {
     private static final String DOT = ".";
 
-    private final String issuer;
-    private final int expirationSec;
-    private final int clockSkewSec;
-    private final String secretKey;
+    @Value("${jwt.issuer}")
+    private String issuer;
 
-    public JWTService(
-                    @Value("${jwt.issuer:PDTS-Celiaquia}") final String issuer,
-                    @Value("${jwt.expiration-sec:86400}") final int expirationSec,
-                    @Value("${jwt.clock-skew-sec:300}") final int clockSkewSec,
-                    @Value("${jwt.secret:3892ry23879ru2389ru93ry}") final String secret) {
-        super();
-        this.issuer = requireNonNull(issuer);
-        this.expirationSec = expirationSec;
-        this.clockSkewSec = clockSkewSec;
-        this.secretKey = BASE64.encode(requireNonNull(secret));
-    }
+    @Value("${jwt.expiration-sec}")
+    private int expirationSec;
 
-    public String permanent(final Map<String, String> attributes) {
-        return newToken(attributes, 0);
-    }
+    @Value("${jwt.clock-skew-sec}")
+    private int clockSkewSec;
+
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     public String expiring(final Map<String, String> attributes) {
         return newToken(attributes, expirationSec);
     }
 
     private String newToken(final Map<String, String> attributes, final int expiresInSec) {
-        final Date now = new Date();
-        final Claims claims = Jwts
-                .claims()
-                .setIssuer(issuer)
-                .setIssuedAt(now);
+        final Claims claims = Jwts.claims().setIssuer(issuer).setIssuedAt(now());
 
         if (expiresInSec > 0) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(now);
-            calendar.add(Calendar.SECOND, expiresInSec);
-            final Date expiresAt =  calendar.getTime();
-
-            claims.setExpiration(expiresAt);
+            claims.setExpiration(
+                    Date.from(Instant.now().plus(expiresInSec, ChronoUnit.SECONDS))
+            );
         }
         claims.putAll(attributes);
 
-        return Jwts
-                .builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .signWith(HS256, secretKey)
                 .compact();

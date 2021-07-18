@@ -4,21 +4,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "alimentos")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Entity //entidad de persistencia
 public class Alimento {
     @Id
-    private Integer numero;
+    private Long numero;
     private String nombre;
-    private String clasificacion; // carnes, cereales, etc. Son las diferentes tablas
+    private String clasif; // carnes, cereales, etc. Son las diferentes tablas
     private String genero_especie_variedad;//algunas tablas de alimento lo tienen
 
     private double energia_kJ;
@@ -44,14 +50,6 @@ public class Alimento {
     private double acidos_grasos_poliinsaturados;
     private double colesterol;
 
-    private Boolean esAccesible = null;
+    private Boolean esAccesible;
     private String imagen;
-
-    public void setEsAccesible(Boolean esAccesible) {
-        this.esAccesible = esAccesible;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
 }

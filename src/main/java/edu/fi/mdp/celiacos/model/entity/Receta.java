@@ -2,25 +2,29 @@ package edu.fi.mdp.celiacos.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Data
+@Table(name = "recetas")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Receta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idReceta;
+    private Long id;
 
     private String nombre;
 
-    private String descripcion;
+    private String descrip;
 
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Ingrediente> ingredientes;
 
     private Integer cantidadPlatos;

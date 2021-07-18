@@ -12,7 +12,7 @@ import java.util.Optional;
 @Component
 @AllArgsConstructor
 public final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
-    private final UsuarioWebAuthService usuarioWebAuthService;
+    private final TokenAuthenticationService tokenAuthenticationService;
 
     @Override
     protected void additionalAuthenticationChecks(final UserDetails d, final UsernamePasswordAuthenticationToken auth) {
@@ -25,7 +25,7 @@ public final class TokenAuthenticationProvider extends AbstractUserDetailsAuthen
 
         return Optional.ofNullable(token)
                 .map(String::valueOf)
-                .flatMap(usuarioWebAuthService::findByToken)
+                .flatMap(tokenAuthenticationService::findByToken)
                 .orElseThrow(() -> new UsernameNotFoundException("Cannot find user with authentication token=" + token));
     }
 }

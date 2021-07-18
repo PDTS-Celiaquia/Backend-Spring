@@ -1,11 +1,11 @@
 package edu.fi.mdp.celiacos.config;
 
-import edu.fi.mdp.celiacos.auth.NoRedirectStrategy;
 import edu.fi.mdp.celiacos.auth.TokenAuthenticationFilter;
 import edu.fi.mdp.celiacos.auth.TokenAuthenticationProvider;
-import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
@@ -23,27 +25,31 @@ import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import static java.util.Objects.requireNonNull;
-import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@FieldDefaults(level = PRIVATE, makeFinal = true)
-class SecurityConfig extends WebSecurityConfigurerAdapter {
+@ComponentScan
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(
             new AntPathRequestMatcher("/public/**"),
-            new AntPathRequestMatcher("/usuarioWeb/**")
-
+            new AntPathRequestMatcher("/usuario/login"),
+            new AntPathRequestMatcher("/usuario/register")
     );
     private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(PUBLIC_URLS);
+    private TokenAuthenticationProvider provider;
 
-    TokenAuthenticationProvider provider;
+    @Autowired
+    public void setProvider(TokenAuthenticationProvider provider) {
+        this.provider = provider;
+    }
 
-    SecurityConfig(final TokenAuthenticationProvider provider) {
-        super();
-        this.provider = requireNonNull(provider);
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -90,7 +96,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public SimpleUrlAuthenticationSuccessHandler successHandler() {
         final SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler();
-        successHandler.setRedirectStrategy(new NoRedirectStrategy());
+        successHandler.setRedirectStrategy((httpServletRequest, httpServletResponse, s) -> {
+        });
         return successHandler;
     }
 

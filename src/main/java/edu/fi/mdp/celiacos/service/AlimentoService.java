@@ -4,6 +4,7 @@ import edu.fi.mdp.celiacos.exception.AlimentoNotFoundException;
 import edu.fi.mdp.celiacos.model.dto.AccesibleDTO;
 import edu.fi.mdp.celiacos.model.entity.Alimento;
 import edu.fi.mdp.celiacos.repository.AlimentoRepository;
+import lombok.AllArgsConstructor;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -14,6 +15,7 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,32 +31,31 @@ import java.util.Optional;
 import static java.util.Objects.isNull;
 
 @Service
+@AllArgsConstructor
 public class AlimentoService {
     private final AlimentoRepository alimentoRepository;
 
-    @Autowired
-    public AlimentoService(AlimentoRepository alimentoRepository) {
-        this.alimentoRepository = alimentoRepository;
-    }
-
-    public Alimento addAlimento(Alimento nuevaAlimento) {
+    @Transactional
+    public Alimento save(Alimento nuevaAlimento) {
         return alimentoRepository.save(nuevaAlimento);
     }
 
-    public List<Alimento> getAll(String name) {
+    public List<Alimento> findAll(String name) {
         if (isNull(name))
             return alimentoRepository.findAll();
         else
             return alimentoRepository.findByNombre(name);
     }
 
-    public Alimento setAccesible(Integer alimentoId, AccesibleDTO accesibleDTO) throws AlimentoNotFoundException {
+    @Transactional
+    public Alimento setEsAccesible(Integer alimentoId, AccesibleDTO accesibleDTO) throws AlimentoNotFoundException {
         Alimento alimento = alimentoRepository.findById(alimentoId).orElseThrow(AlimentoNotFoundException::new);
 
         alimento.setEsAccesible(accesibleDTO.isEsAccesible());
         return alimentoRepository.save(alimento);
     }
 
+    @Transactional
     public Alimento setImagen(Integer alimentoId, String filenameImagen) throws AlimentoNotFoundException {
         Alimento alimento = alimentoRepository.findById(alimentoId).orElseThrow(AlimentoNotFoundException::new);
 
@@ -63,6 +64,7 @@ public class AlimentoService {
 
     }
 
+    @Transactional
     public void cargarTablas() {
         //TODO: Parametrizar de donde vienen los .xls
         cargarTabla("Cereales", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Cereales.xls");
@@ -123,7 +125,7 @@ public class AlimentoService {
                     });
 
                     Alimento nuevoAlimento = new Alimento(
-                            ((Double) valores.get("nº")).intValue(),
+                            ((Double) valores.get("nº")).longValue(),
                             (String) valores.get("alimento"),
                             clasificacion,
                             checkString(valores, "genero_-_especie_-_variedad"),
@@ -153,7 +155,7 @@ public class AlimentoService {
                             null
                     );
 
-                    this.addAlimento(nuevoAlimento);
+                    alimentoRepository.save(nuevoAlimento);
                     Files.deleteIfExists(tmpPath);
 
                 }

@@ -1,6 +1,6 @@
 package edu.fi.mdp.celiacos.model.entity;
 
-import edu.fi.mdp.celiacos.auth.UsuarioWeb;
+import edu.fi.mdp.celiacos.auth.Usuario;
 import edu.fi.mdp.celiacos.model.dto.CuestionarioDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,27 +9,31 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
-import java.time.Instant;
+import java.util.Date;
 
 @Entity
-@Table(name = "cuestionario")
+@Table(name = "cuestionarios")
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Cuestionario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +41,7 @@ public class Cuestionario {
 
     // TODO Es necesario identificar al usuario que completó el cuestionario? o es anonimo?
     @OneToOne(fetch = FetchType.EAGER)
-    private UsuarioWeb usuario;
+    private Usuario usuario;
 
     // ¿Es celíaco?
     @Column(name = "celiaco")
@@ -85,10 +89,11 @@ public class Cuestionario {
     private boolean carne;
 
     @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "timestamp")
-    private Instant timestamp;
+    private Date timestamp;
 
-    public Cuestionario(UsuarioWeb usuario, CuestionarioDTO cuestionarioDTO) {
+    public Cuestionario(Usuario usuario, CuestionarioDTO cuestionarioDTO) {
         this.usuario = usuario;
         BeanUtils.copyProperties(cuestionarioDTO, this);
     }
