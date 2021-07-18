@@ -33,7 +33,7 @@ public class AlimentoController {
 
     @GetMapping("/")
     public ResponseEntity<?> getAll(@RequestParam(required = false) String name) {
-        return ResponseEntity.ok(alimentoService.getAll(name));
+        return ResponseEntity.ok(alimentoService.findAll(name));
     }
 
     @GetMapping("/{alimentoId}")
@@ -44,7 +44,7 @@ public class AlimentoController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
     @PostMapping("/")
     public ResponseEntity<?> addAlimento(@RequestBody Alimento nuevoAlimento) {
-        return ResponseEntity.ok(alimentoService.addAlimento(nuevoAlimento));
+        return ResponseEntity.ok(alimentoService.save(nuevoAlimento));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
@@ -56,7 +56,7 @@ public class AlimentoController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
     @PatchMapping("/setAccesible/{alimentoId}")
     public ResponseEntity<?> setAccesible(@PathVariable Integer alimentoId, @RequestBody AccesibleDTO accesibleDTO) throws AlimentoNotFoundException {
-        return ResponseEntity.ok(alimentoService.setAccesible(alimentoId, accesibleDTO));
+        return ResponseEntity.ok(alimentoService.setEsAccesible(alimentoId, accesibleDTO));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")

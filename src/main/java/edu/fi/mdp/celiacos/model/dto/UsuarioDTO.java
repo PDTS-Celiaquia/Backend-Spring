@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UsuarioWebDTO extends LoginDTO {
+public class UsuarioDTO extends LoginDTO {
     @NotBlank(message = "Falta nombre")
     private String nombre;
 

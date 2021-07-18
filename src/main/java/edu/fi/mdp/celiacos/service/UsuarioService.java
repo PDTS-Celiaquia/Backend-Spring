@@ -6,14 +6,16 @@ import edu.fi.mdp.celiacos.auth.TokenAuthenticationService;
 import edu.fi.mdp.celiacos.auth.Usuario;
 import edu.fi.mdp.celiacos.exception.UnauthorizedException;
 import edu.fi.mdp.celiacos.model.dto.LoginDTO;
+import edu.fi.mdp.celiacos.model.dto.PasswordDTO;
 import edu.fi.mdp.celiacos.model.dto.TokenDTO;
-import edu.fi.mdp.celiacos.model.dto.UsuarioWebDTO;
+import edu.fi.mdp.celiacos.model.dto.UsuarioDTO;
 import edu.fi.mdp.celiacos.repository.AuthorityRepository;
 import edu.fi.mdp.celiacos.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 
@@ -25,16 +27,25 @@ public class UsuarioService {
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Usuario register(UsuarioWebDTO usuarioWebDTO, AuthorityEnum role) {
+    @Transactional
+    public Usuario register(UsuarioDTO usuarioDTO, AuthorityEnum role) throws UnauthorizedException {
         Authority authority = authorityRepository.findById(role).orElseThrow();
-        Usuario usuario = new Usuario(usuarioWebDTO, authority);
-        usuario.setPassword(passwordEncoder.encode(usuarioWebDTO.getPassword()));
+        if (usuarioRepository.findByEmail(usuarioDTO.getEmail()).isPresent()) throw new UnauthorizedException();
+        Usuario usuario = new Usuario(usuarioDTO, authority);
+        usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword()));
         return usuarioRepository.save(usuario);
     }
 
     public TokenDTO login(LoginDTO loginDTO) throws UnauthorizedException {
         Optional<String> stringOptional = tokenAuthenticationService.login(loginDTO.getEmail(), loginDTO.getPassword());
         return new TokenDTO(stringOptional.orElseThrow(UnauthorizedException::new));
+    }
+
+    @Transactional
+    public boolean modifyPassword(Usuario usuario, PasswordDTO passwordDTO) {
+        usuarioRepository.updatePasswordById(
+                passwordEncoder.encode(passwordDTO.getPassword()), usuario.getId());
+        return true;
     }
 
     public Optional<Usuario> findByEmail(String email) {

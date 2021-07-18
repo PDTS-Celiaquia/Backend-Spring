@@ -1,7 +1,7 @@
 package edu.fi.mdp.celiacos.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import edu.fi.mdp.celiacos.model.dto.UsuarioWebDTO;
+import edu.fi.mdp.celiacos.model.dto.UsuarioDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -69,8 +69,8 @@ public class Usuario implements UserDetails {
     @Column(name = "fecha_baja")
     private Date fecha_baja;
 
-    public Usuario(UsuarioWebDTO usuarioWebDTO, Authority authority) {
-        BeanUtils.copyProperties(usuarioWebDTO, this);
+    public Usuario(UsuarioDTO usuarioDTO, Authority authority) {
+        BeanUtils.copyProperties(usuarioDTO, this);
         this.authority = authority;
     }
 

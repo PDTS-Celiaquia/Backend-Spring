@@ -6,6 +6,7 @@ import edu.fi.mdp.celiacos.repository.RecetaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static java.util.Objects.isNull;
@@ -26,15 +27,18 @@ public class RecetaService {
             return recetaRepository.findByNombre(name);
     }
 
+    @Transactional
     public Receta addReceta(Receta nuevaReceta) {
         nuevaReceta.setId(null);
         return recetaRepository.save(nuevaReceta);
     }
 
+    @Transactional
     public Receta modificarReceta(Receta nuevaReceta) {
         return recetaRepository.save(nuevaReceta);
     }
 
+    @Transactional
     public void deleteReceta(Integer idReceta) {
         recetaRepository.deleteById(idReceta);
     }
