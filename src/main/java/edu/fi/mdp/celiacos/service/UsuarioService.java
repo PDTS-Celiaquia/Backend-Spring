@@ -7,7 +7,7 @@ import edu.fi.mdp.celiacos.auth.Usuario;
 import edu.fi.mdp.celiacos.exception.UnauthorizedException;
 import edu.fi.mdp.celiacos.model.dto.LoginDTO;
 import edu.fi.mdp.celiacos.model.dto.PasswordDTO;
-import edu.fi.mdp.celiacos.model.dto.TokenDTO;
+import edu.fi.mdp.celiacos.model.dto.LoginResponseDTO;
 import edu.fi.mdp.celiacos.model.dto.UsuarioDTO;
 import edu.fi.mdp.celiacos.repository.AuthorityRepository;
 import edu.fi.mdp.celiacos.repository.UsuarioRepository;
@@ -36,9 +36,9 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public TokenDTO login(LoginDTO loginDTO) throws UnauthorizedException {
+    public LoginResponseDTO login(LoginDTO loginDTO) throws UnauthorizedException {
         Optional<String> stringOptional = tokenAuthenticationService.login(loginDTO.getEmail(), loginDTO.getPassword());
-        return new TokenDTO(stringOptional.orElseThrow(UnauthorizedException::new));
+        return new LoginResponseDTO(stringOptional.orElseThrow(UnauthorizedException::new));
     }
 
     @Transactional
