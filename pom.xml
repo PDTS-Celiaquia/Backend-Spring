@@ -17,7 +17,7 @@
     <name>SpringBoot-Celiacos</name>
 
     <properties>
-        <java.version>1.11</java.version>
+        <java.version>11</java.version>
     </properties>
 
     <dependencies>
