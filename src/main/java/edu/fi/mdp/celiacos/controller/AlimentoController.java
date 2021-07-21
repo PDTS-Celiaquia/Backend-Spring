@@ -31,7 +31,7 @@ public class AlimentoController {
 
     private final AlimentoService alimentoService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<?> getAll(@RequestParam(required = false) String name) {
         return ResponseEntity.ok(alimentoService.findAll(name));
     }
