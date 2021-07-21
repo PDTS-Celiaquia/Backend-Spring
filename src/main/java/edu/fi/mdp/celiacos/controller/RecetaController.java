@@ -15,7 +15,7 @@ import javax.validation.Valid;
 public class RecetaController {
     private final RecetaService recetaService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<?> getAll(@RequestParam(required = false) String name){
         return  ResponseEntity.ok(recetaService.getAll(name));
     }
