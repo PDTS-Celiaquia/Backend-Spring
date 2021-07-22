@@ -28,13 +28,8 @@ public class RecetaService {
     }
 
     @Transactional
-    public Receta addReceta(Receta nuevaReceta) {
-        nuevaReceta.setId(null);
-        return recetaRepository.save(nuevaReceta);
-    }
-
-    @Transactional
-    public Receta modificarReceta(Receta nuevaReceta) {
+    public Receta saveReceta(Receta nuevaReceta) {
+        // TODO: calculate other fields
         return recetaRepository.save(nuevaReceta);
     }
 
