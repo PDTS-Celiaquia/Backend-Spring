@@ -22,7 +22,7 @@ public class Receta {
 
     private String nombre;
 
-    private String descrip;
+    private String descripcion;
 
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Ingrediente> ingredientes;

@@ -21,15 +21,9 @@ public class RecetaController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
-    @PostMapping("/")
-    public ResponseEntity<?> addReceta(@RequestBody @Valid Receta nuevaReceta){
-        return ResponseEntity.ok(recetaService.addReceta(nuevaReceta));
-    }
-
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
-    @PostMapping("/modificar")
-    public ResponseEntity<?> modificarReceta(@RequestBody @Valid Receta nuevaReceta){
-        return ResponseEntity.ok(recetaService.modificarReceta(nuevaReceta));
+    @PutMapping("/")
+    public ResponseEntity<?> saveReceta(@RequestBody @Valid Receta nuevaReceta){
+        return ResponseEntity.ok(recetaService.saveReceta(nuevaReceta));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
