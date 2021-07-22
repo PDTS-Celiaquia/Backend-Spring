@@ -48,11 +48,8 @@ public class AlimentoService {
     }
 
     @Transactional
-    public Alimento setEsAccesible(Long alimentoId, AccesibleDTO accesibleDTO) throws AlimentoNotFoundException {
-        Alimento alimento = alimentoRepository.findById(alimentoId).orElseThrow(AlimentoNotFoundException::new);
-
-        alimento.setEsAccesible(accesibleDTO.isEsAccesible());
-        return alimentoRepository.save(alimento);
+    public void setEsAccesible(Long alimentoId, AccesibleDTO accesibleDTO) {
+        alimentoRepository.updateAlimentoEsAccesible(alimentoId, accesibleDTO.isEsAccesible());
     }
 
     @Transactional

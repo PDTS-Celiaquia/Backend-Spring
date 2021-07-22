@@ -60,8 +60,9 @@ public class AlimentoController {
     @PatchMapping("/{alimentoId}/accesible")
     public ResponseEntity<?> setAccesible(
             @PathVariable Long alimentoId, @RequestBody @Valid AccesibleDTO accesibleDTO
-    ) throws AlimentoNotFoundException {
-        return ResponseEntity.ok(alimentoService.setEsAccesible(alimentoId, accesibleDTO));
+    ) {
+        alimentoService.setEsAccesible(alimentoId, accesibleDTO);
+        return ResponseEntity.ok("OK");
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
