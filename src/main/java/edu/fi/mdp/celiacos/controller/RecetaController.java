@@ -17,7 +17,12 @@ public class RecetaController {
 
     @GetMapping("")
     public ResponseEntity<?> getAll(@RequestParam(required = false) String name){
-        return  ResponseEntity.ok(recetaService.getAll(name));
+        return ResponseEntity.ok(recetaService.getAll(name));
+    }
+
+    @GetMapping("/{idReceta}")
+    public ResponseEntity<?> getAll(@PathVariable Long idReceta){
+        return ResponseEntity.ok(recetaService.findById(idReceta));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
@@ -28,7 +33,7 @@ public class RecetaController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
     @DeleteMapping("/{idReceta}")
-    public ResponseEntity<?> deleteReceta(@PathVariable Integer idReceta){
+    public ResponseEntity<?> deleteReceta(@PathVariable Long idReceta){
         recetaService.deleteReceta(idReceta);
         return ResponseEntity.ok("OK");
     }

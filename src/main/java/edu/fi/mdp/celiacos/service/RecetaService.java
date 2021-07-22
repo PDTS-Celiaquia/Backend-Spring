@@ -27,6 +27,10 @@ public class RecetaService {
             return recetaRepository.findByNombre(name);
     }
 
+    public Receta findById(Long id) {
+        return recetaRepository.findById(id).orElse(null);
+    }
+
     @Transactional
     public Receta saveReceta(Receta nuevaReceta) {
         // TODO: calculate other fields
@@ -34,7 +38,7 @@ public class RecetaService {
     }
 
     @Transactional
-    public void deleteReceta(Integer idReceta) {
+    public void deleteReceta(Long idReceta) {
         recetaRepository.deleteById(idReceta);
     }
 

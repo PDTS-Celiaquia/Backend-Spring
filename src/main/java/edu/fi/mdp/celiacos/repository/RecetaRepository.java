@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RecetaRepository  extends JpaRepository<Receta,Integer> {
+public interface RecetaRepository extends JpaRepository<Receta, Long> {
     List<Receta> findByNombre(String nombre);
 }
