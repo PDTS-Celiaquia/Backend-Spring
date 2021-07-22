@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -37,13 +38,15 @@ public class AlimentoController {
     }
 
     @GetMapping("/{alimentoId}")
-    public ResponseEntity<?> getAlimentoById(@PathVariable Integer alimentoId) throws AlimentoNotFoundException {
-        return ResponseEntity.ok(alimentoService.get(alimentoId));
+    public ResponseEntity<?> getAlimentoById(
+            @PathVariable Long alimentoId
+    ) throws AlimentoNotFoundException {
+        return ResponseEntity.ok(alimentoService.getById(alimentoId));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
     @PostMapping("/")
-    public ResponseEntity<?> addAlimento(@RequestBody Alimento nuevoAlimento) {
+    public ResponseEntity<?> addAlimento(@RequestBody @Valid Alimento nuevoAlimento) {
         return ResponseEntity.ok(alimentoService.save(nuevoAlimento));
     }
 
@@ -54,14 +57,18 @@ public class AlimentoController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
-    @PatchMapping("/setAccesible/{alimentoId}")
-    public ResponseEntity<?> setAccesible(@PathVariable Integer alimentoId, @RequestBody AccesibleDTO accesibleDTO) throws AlimentoNotFoundException {
+    @PatchMapping("/{alimentoId}/accesible")
+    public ResponseEntity<?> setAccesible(
+            @PathVariable Long alimentoId, @RequestBody @Valid AccesibleDTO accesibleDTO
+    ) throws AlimentoNotFoundException {
         return ResponseEntity.ok(alimentoService.setEsAccesible(alimentoId, accesibleDTO));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
-    @PostMapping("/setImagen/{alimentoId}")
-    public ResponseEntity<?> setImagen(@PathVariable Integer alimentoId, @RequestParam("image") MultipartFile multipartFile) throws AlimentoNotFoundException, IOException {
+    @PatchMapping("/{alimentoId}/imagen")
+    public ResponseEntity<?> setImagen(
+            @PathVariable Long alimentoId, @RequestParam("image") MultipartFile multipartFile
+    ) throws AlimentoNotFoundException, IOException {
         String[] temp = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename())).split("\\.");
         String extension = temp[temp.length - 1];
 
