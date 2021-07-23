@@ -48,15 +48,12 @@ public class AlimentoService {
     }
 
     @Transactional
-    public Alimento setEsAccesible(Integer alimentoId, AccesibleDTO accesibleDTO) throws AlimentoNotFoundException {
-        Alimento alimento = alimentoRepository.findById(alimentoId).orElseThrow(AlimentoNotFoundException::new);
-
-        alimento.setEsAccesible(accesibleDTO.isEsAccesible());
-        return alimentoRepository.save(alimento);
+    public void setEsAccesible(Long alimentoId, AccesibleDTO accesibleDTO) {
+        alimentoRepository.updateAlimentoEsAccesible(alimentoId, accesibleDTO.isEsAccesible());
     }
 
     @Transactional
-    public Alimento setImagen(Integer alimentoId, String filenameImagen) throws AlimentoNotFoundException {
+    public Alimento setImagen(Long alimentoId, String filenameImagen) throws AlimentoNotFoundException {
         Alimento alimento = alimentoRepository.findById(alimentoId).orElseThrow(AlimentoNotFoundException::new);
 
         alimento.setImagen(filenameImagen);
@@ -203,11 +200,8 @@ public class AlimentoService {
         return (String) valor;
     }
 
-    public Alimento get(Integer alimentoId) throws AlimentoNotFoundException {
-
-        Optional<Alimento> alimento = alimentoRepository.findById(alimentoId);
-        if (alimento.isPresent())
-            return alimento.get();
-        else throw new AlimentoNotFoundException();
+    public Alimento getById(Long alimentoId) throws AlimentoNotFoundException {
+        return alimentoRepository.findById(alimentoId)
+                .orElseThrow(() -> new AlimentoNotFoundException());
     }
 }
