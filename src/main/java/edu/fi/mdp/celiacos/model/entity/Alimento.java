@@ -27,6 +27,13 @@ public class Alimento {
     private String clasif; // carnes, cereales, etc. Son las diferentes tablas
     private String genero_especie_variedad;//algunas tablas de alimento lo tienen
 
+    private int tipo; //Tipo de alimento segun el nivel de la piramide nutricional
+    //0 : Carbohidratos
+    //1 : Verduras/Frutas
+    //2 : Proteínas
+    //3 : Grasas
+    //TODO Revisar con las nutricionistas que categorizacion sirve para el método del plato
+
     private double energia_kJ;
     private double agua;
     private double proteina;

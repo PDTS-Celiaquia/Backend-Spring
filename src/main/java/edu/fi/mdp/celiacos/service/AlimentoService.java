@@ -64,22 +64,22 @@ public class AlimentoService {
     @Transactional
     public void cargarTablas() {
         //TODO: Parametrizar de donde vienen los .xls
-        cargarTabla("Cereales", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Cereales.xls");
-        cargarTabla("Vegetales", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Vegetales.xls");
-        cargarTabla("Frutas", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Frutas.xls");
-        cargarTabla("Grasas", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Grasas.xls");
-        cargarTabla("Pescados", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Pescados.xls");
-        cargarTabla("PescadosAG", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/PescadosAG.xls");
-        cargarTabla("Carnes", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Carnes.xls");
-        cargarTabla("CarnesAG", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/CarnesAG.xls");
-        cargarTabla("Leche", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Leche.xls");
-        cargarTabla("Huevo", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Huevo.xls");
-        cargarTabla("ProdAZ", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/ProdAz.xls");
-        cargarTabla("Misc", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Misc.xls");
+        cargarTabla("Cereales", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Cereales.xls",0);
+        cargarTabla("Vegetales", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Vegetales.xls",1);
+        cargarTabla("Frutas", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Frutas.xls",1);
+        cargarTabla("Pescados", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Pescados.xls",2);
+        cargarTabla("PescadosAG", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/PescadosAG.xls",2);
+        cargarTabla("Carnes", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Carnes.xls",2);
+        cargarTabla("CarnesAG", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/CarnesAG.xls",2);
+        cargarTabla("Leche", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Leche.xls",2);
+        cargarTabla("Huevo", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Huevo.xls",2);
+        cargarTabla("Grasas", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Grasas.xls",3);
+        cargarTabla("ProdAZ", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/ProdAz.xls",3);
+        cargarTabla("Misc", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Misc.xls",3);
 
     }
 
-    private void cargarTabla(String clasificacion, String Url) {
+    private void cargarTabla(String clasificacion, String Url,int tipo) {
         try {
             InputStream in = new URL(Url).openStream();
             Path tmpPath = Paths.get(clasificacion + ".xls");
@@ -126,6 +126,7 @@ public class AlimentoService {
                             (String) valores.get("alimento"),
                             clasificacion,
                             checkString(valores, "genero_-_especie_-_variedad"),
+                            tipo,
                             checkDouble(valores, "energia"),
                             checkDouble(valores, "agua"),
                             checkDouble(valores, "proteinas"),
