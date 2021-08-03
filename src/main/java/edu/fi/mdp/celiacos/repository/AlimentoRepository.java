@@ -15,7 +15,7 @@ public interface AlimentoRepository extends JpaRepository<Alimento, Long> {
     List<Alimento> findByNombre(String nombre);
 
     @Modifying
-    @Query(value = "UPDATE Alimento a SET a.esAccesible = :esAccesible WHERE a.numero = :alimentoId")
+    @Query(value = "UPDATE Alimento a SET a.esAccesible = :esAccesible WHERE a.id = :alimentoId")
     void updateAlimentoEsAccesible(
             @Param("alimentoId") Long alimentoId, @Param("esAccesible") boolean esAccesible);
 }
