@@ -3,6 +3,7 @@ package edu.fi.mdp.celiacos.service;
 import edu.fi.mdp.celiacos.exception.AlimentoNotFoundException;
 import edu.fi.mdp.celiacos.model.dto.AccesibleDTO;
 import edu.fi.mdp.celiacos.model.entity.Alimento;
+import edu.fi.mdp.celiacos.model.enums.TipoAlimento;
 import edu.fi.mdp.celiacos.repository.AlimentoRepository;
 import lombok.AllArgsConstructor;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -12,7 +13,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,7 +27,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.Objects.isNull;
 
@@ -64,22 +64,22 @@ public class AlimentoService {
     @Transactional
     public void cargarTablas() {
         //TODO: Parametrizar de donde vienen los .xls
-        cargarTabla("Cereales", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Cereales.xls");
-        cargarTabla("Vegetales", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Vegetales.xls");
-        cargarTabla("Frutas", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Frutas.xls");
-        cargarTabla("Grasas", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Grasas.xls");
-        cargarTabla("Pescados", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Pescados.xls");
-        cargarTabla("PescadosAG", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/PescadosAG.xls");
-        cargarTabla("Carnes", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Carnes.xls");
-        cargarTabla("CarnesAG", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/CarnesAG.xls");
-        cargarTabla("Leche", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Leche.xls");
-        cargarTabla("Huevo", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Huevo.xls");
-        cargarTabla("ProdAZ", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/ProdAz.xls");
-        cargarTabla("Misc", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Misc.xls");
+        cargarTabla("Cereales", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Cereales.xls",TipoAlimento.CARBOHIDRATOS);
+        cargarTabla("Vegetales", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Vegetales.xls",TipoAlimento.VERDURAS);
+        cargarTabla("Frutas", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Frutas.xls",TipoAlimento.VERDURAS);
+        cargarTabla("Pescados", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Pescados.xls",TipoAlimento.PROTEINAS);
+        cargarTabla("PescadosAG", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/PescadosAG.xls",TipoAlimento.PROTEINAS);
+        cargarTabla("Carnes", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Carnes.xls",TipoAlimento.PROTEINAS);
+        cargarTabla("CarnesAG", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/CarnesAG.xls",TipoAlimento.PROTEINAS);
+        cargarTabla("Leche", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Leche.xls",TipoAlimento.PROTEINAS);
+        cargarTabla("Huevo", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Huevo.xls",TipoAlimento.PROTEINAS);
+        cargarTabla("Grasas", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Grasas.xls",TipoAlimento.GRASAS);
+        cargarTabla("ProdAZ", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/ProdAz.xls",TipoAlimento.GRASAS);
+        cargarTabla("Misc", "http://www.argenfoods.unlu.edu.ar/Tablas/Grupo/Misc.xls",TipoAlimento.GRASAS);
 
     }
 
-    private void cargarTabla(String clasificacion, String Url) {
+    private void cargarTabla(String clasificacion, String Url, TipoAlimento tipo) {
         try {
             InputStream in = new URL(Url).openStream();
             Path tmpPath = Paths.get(clasificacion + ".xls");
@@ -126,6 +126,7 @@ public class AlimentoService {
                             (String) valores.get("alimento"),
                             clasificacion,
                             checkString(valores, "genero_-_especie_-_variedad"),
+                            tipo,
                             checkDouble(valores, "energia"),
                             checkDouble(valores, "agua"),
                             checkDouble(valores, "proteinas"),
@@ -148,7 +149,7 @@ public class AlimentoService {
                             checkDouble(valores, "ac._grasos_monoinsaturados"),
                             checkDouble(valores, "ac._grasos_poliinsaturados"),
                             checkDouble(valores, "colesterol"),
-                            null,
+                            false, //esAccesible - Se carga asumiendo que no son accesibles, revisar si esto es realmente asi en los excel
                             null
                     );
 
