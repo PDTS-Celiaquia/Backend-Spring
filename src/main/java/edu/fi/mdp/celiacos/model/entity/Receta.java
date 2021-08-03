@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ public class Receta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "nombre")
     private String nombre;
     @Column(name = "descripcion", length = 400)
@@ -43,7 +44,7 @@ public class Receta {
     @Column(name = "cantidadPlatos")
     private Integer cantidadPlatos;
 
-    @Column(name = "instrucciones", length = 600)
+    @Column(name = "instrucciones", length = 5000)
     private String instrucciones;
 
     @Min(0)

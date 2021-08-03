@@ -13,7 +13,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -27,7 +27,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.Objects.isNull;
 
@@ -150,7 +149,7 @@ public class AlimentoService {
                             checkDouble(valores, "ac._grasos_monoinsaturados"),
                             checkDouble(valores, "ac._grasos_poliinsaturados"),
                             checkDouble(valores, "colesterol"),
-                            null,
+                            false, //esAccesible - Se carga asumiendo que no son accesibles, revisar si esto es realmente asi en los excel
                             null
                     );
 
