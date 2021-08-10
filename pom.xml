@@ -13,7 +13,7 @@
 
     <groupId>edu.fi.mdp.celiacos</groupId>
     <artifactId>spring</artifactId>
-    <version>0.1.8</version>
+    <version>0.1.9</version>
     <name>SpringBoot-Celiacos</name>
 
     <properties>
@@ -121,6 +121,12 @@
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
             <version>2.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <version>7.12.1</version>
         </dependency>
 
 
