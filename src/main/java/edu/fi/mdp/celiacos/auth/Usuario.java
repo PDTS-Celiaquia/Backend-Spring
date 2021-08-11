@@ -1,7 +1,7 @@
 package edu.fi.mdp.celiacos.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import edu.fi.mdp.celiacos.model.dto.UsuarioDTO;
+import edu.fi.mdp.celiacos.model.dto.request.UsuarioDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +24,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -42,16 +43,20 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(max = 200)
     @Column(name = "nombre", length = 200)
     private String nombre;
 
+    @Size(max = 200)
     @Column(name = "apellido", length = 200)
     private String apellido;
 
+    @Size(max = 500)
     @Column(name = "email", length = 500)
     private String email;
 
     @JsonIgnore
+    @Size(max = 500)
     @Column(name = "password", length = 500)
     private String password;
 

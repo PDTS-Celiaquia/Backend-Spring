@@ -1,13 +1,11 @@
-package edu.fi.mdp.celiacos.model.dto;
+package edu.fi.mdp.celiacos.model.dto.request;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Getter

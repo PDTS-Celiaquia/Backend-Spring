@@ -1,23 +1,22 @@
 package edu.fi.mdp.celiacos.model.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
-
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -34,21 +33,25 @@ public class Receta {
     @NotBlank
     @Column(name = "nombre")
     private String nombre;
+
+    @Size(max = 400)
     @Column(name = "descripcion", length = 400)
     private String descripcion;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "recetas_ingredientes")
     private Set<Ingrediente> ingredientes;
 
     @Min(1)
-    @Column(name = "cantidadPlatos")
+    @Column(name = "cantidad_platos")
     private Integer cantidadPlatos;
 
+    @Size(max = 5000)
     @Column(name = "instrucciones", length = 5000)
     private String instrucciones;
 
     @Min(0)
-    @Column(name = "energia_kJ")
+    @Column(name = "energia_kj")
     private double energia_kJ;
 
     @Min(0)

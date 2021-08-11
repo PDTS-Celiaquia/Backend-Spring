@@ -1,9 +1,9 @@
 package edu.fi.mdp.celiacos.model.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +16,8 @@ import javax.persistence.Table;
 @Table(name = "unidades_de_medida")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class UnidadDeMedida {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

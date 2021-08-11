@@ -1,7 +1,7 @@
 package edu.fi.mdp.celiacos.controller;
 
 import edu.fi.mdp.celiacos.auth.Usuario;
-import edu.fi.mdp.celiacos.model.dto.CuestionarioDTO;
+import edu.fi.mdp.celiacos.model.dto.request.CuestionarioDTO;
 import edu.fi.mdp.celiacos.service.CuestionarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
