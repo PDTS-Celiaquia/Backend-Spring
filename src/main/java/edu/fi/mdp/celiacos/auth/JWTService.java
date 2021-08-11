@@ -12,14 +12,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.function.Supplier;
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
-import static io.jsonwebtoken.impl.TextCodec.BASE64;
-import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringUtils.substringBeforeLast;
 
 @Service

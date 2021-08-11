@@ -1,6 +1,5 @@
 package edu.fi.mdp.celiacos.auth;
 
-import edu.fi.mdp.celiacos.repository.UsuarioRepository;
 import edu.fi.mdp.celiacos.service.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.User;
