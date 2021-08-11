@@ -1,20 +1,21 @@
 package edu.fi.mdp.celiacos.config;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
         exposeDirectory("img", registry);
     }
 
@@ -24,7 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         if (dirName.startsWith("../")) dirName = dirName.replace("../", "");
 
-        registry.addResourceHandler("/public/" + dirName + "/**").addResourceLocations("file:/"+ uploadPath + "/");
+        registry.addResourceHandler("/public/" + dirName + "/**").addResourceLocations("file:/" + uploadPath + "/");
     }
 
     @Value("${cors.allowed-origin}")

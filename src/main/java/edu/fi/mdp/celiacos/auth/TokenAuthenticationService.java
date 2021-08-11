@@ -2,7 +2,6 @@ package edu.fi.mdp.celiacos.auth;
 
 import com.google.common.collect.ImmutableMap;
 import edu.fi.mdp.celiacos.service.UsuarioService;
-import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

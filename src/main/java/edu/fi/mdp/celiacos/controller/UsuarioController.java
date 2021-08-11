@@ -4,9 +4,9 @@ import edu.fi.mdp.celiacos.auth.AuthorityEnum;
 import edu.fi.mdp.celiacos.auth.Usuario;
 import edu.fi.mdp.celiacos.exception.EmailNotAvailableException;
 import edu.fi.mdp.celiacos.exception.UnauthorizedException;
-import edu.fi.mdp.celiacos.model.dto.LoginDTO;
-import edu.fi.mdp.celiacos.model.dto.PasswordDTO;
-import edu.fi.mdp.celiacos.model.dto.UsuarioDTO;
+import edu.fi.mdp.celiacos.model.dto.request.LoginDTO;
+import edu.fi.mdp.celiacos.model.dto.request.PasswordDTO;
+import edu.fi.mdp.celiacos.model.dto.request.UsuarioDTO;
 import edu.fi.mdp.celiacos.service.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 
 @RestController
 @AllArgsConstructor

@@ -1,4 +1,4 @@
-package edu.fi.mdp.celiacos.model.dto;
+package edu.fi.mdp.celiacos.model.dto.response;
 
 
 import lombok.AllArgsConstructor;

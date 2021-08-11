@@ -1,7 +1,7 @@
 package edu.fi.mdp.celiacos.service;
 
 import edu.fi.mdp.celiacos.exception.AlimentoNotFoundException;
-import edu.fi.mdp.celiacos.model.dto.AccesibleDTO;
+import edu.fi.mdp.celiacos.model.dto.request.AccesibleDTO;
 import edu.fi.mdp.celiacos.model.entity.Alimento;
 import edu.fi.mdp.celiacos.model.enums.TipoAlimento;
 import edu.fi.mdp.celiacos.repository.AlimentoRepository;
@@ -13,7 +13,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
-
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -202,7 +201,6 @@ public class AlimentoService {
     }
 
     public Alimento getById(Long alimentoId) throws AlimentoNotFoundException {
-        return alimentoRepository.findById(alimentoId)
-                .orElseThrow(() -> new AlimentoNotFoundException());
+        return alimentoRepository.findById(alimentoId).orElseThrow(AlimentoNotFoundException::new);
     }
 }

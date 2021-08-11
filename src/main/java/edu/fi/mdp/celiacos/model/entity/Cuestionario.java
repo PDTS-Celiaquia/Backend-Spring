@@ -1,9 +1,8 @@
 package edu.fi.mdp.celiacos.model.entity;
 
 import edu.fi.mdp.celiacos.auth.Usuario;
-import edu.fi.mdp.celiacos.model.dto.CuestionarioDTO;
+import edu.fi.mdp.celiacos.model.dto.request.CuestionarioDTO;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -58,7 +57,7 @@ public class Cuestionario {
     private boolean tratamiento;
 
     // ¿Usted considera que adhiere correctamente a la dieta libre de gluten?
-    @Column(name = "dietaSinTACC")
+    @Column(name = "dieta_sintacc")
     private boolean dietaSinTACC;
 
     // ¿Con qué frecuencia usted cree que ingiere gluten (ya sea voluntaria o involuntariamente)

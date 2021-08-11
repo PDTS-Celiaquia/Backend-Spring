@@ -1,4 +1,4 @@
-package edu.fi.mdp.celiacos.model.dto;
+package edu.fi.mdp.celiacos.model.dto.request;
 
 
 import lombok.AllArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -16,9 +15,8 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class LoginDTO extends PasswordDTO {
-    @NotBlank(message = "El campo email no puede estar vacío")
-    @Email(message = "Formato del email no es válido")
-    @Size(max = 500)
-    private String email;
+public class PasswordDTO {
+    @NotBlank(message = "Debe ingresar su contraseña")
+    @Size(min = 4)
+    private String password;
 }

@@ -1,7 +1,7 @@
 package edu.fi.mdp.celiacos.service;
 
 import edu.fi.mdp.celiacos.auth.Usuario;
-import edu.fi.mdp.celiacos.model.dto.CuestionarioDTO;
+import edu.fi.mdp.celiacos.model.dto.request.CuestionarioDTO;
 import edu.fi.mdp.celiacos.model.entity.Cuestionario;
 import edu.fi.mdp.celiacos.repository.CuestionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

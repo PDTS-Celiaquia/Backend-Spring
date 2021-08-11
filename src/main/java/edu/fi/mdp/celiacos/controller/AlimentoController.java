@@ -2,7 +2,7 @@ package edu.fi.mdp.celiacos.controller;
 
 
 import edu.fi.mdp.celiacos.exception.AlimentoNotFoundException;
-import edu.fi.mdp.celiacos.model.dto.AccesibleDTO;
+import edu.fi.mdp.celiacos.model.dto.request.AccesibleDTO;
 import edu.fi.mdp.celiacos.model.entity.Alimento;
 import edu.fi.mdp.celiacos.service.AlimentoService;
 import edu.fi.mdp.celiacos.utils.FileUploadUtil;

@@ -24,7 +24,6 @@ import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import static java.util.Objects.requireNonNull;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 

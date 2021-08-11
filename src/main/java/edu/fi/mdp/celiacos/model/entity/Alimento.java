@@ -2,19 +2,16 @@ package edu.fi.mdp.celiacos.model.entity;
 
 import edu.fi.mdp.celiacos.model.enums.TipoAlimento;
 import lombok.AllArgsConstructor;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.Column;
 import javax.persistence.Enumerated;
-
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -130,7 +127,7 @@ public class Alimento {
     private double colesterol;
 
     @NotNull
-    @Column(name = "esAccesible")
+    @Column(name = "es_accesible")
     private Boolean esAccesible;
 
     @Column(name = "imagen", length = 500)
