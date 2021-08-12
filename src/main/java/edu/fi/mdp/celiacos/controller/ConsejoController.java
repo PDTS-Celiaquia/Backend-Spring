@@ -27,14 +27,14 @@ public class ConsejoController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
     @PutMapping("/")
-    public ResponseEntity<?> saveReceta(@RequestBody @Valid Consejo nuevoConsejo){
+    public ResponseEntity<?> saveConsejo(@RequestBody @Valid Consejo nuevoConsejo){
         return ResponseEntity.ok(consejoService.saveConsejo(nuevoConsejo));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERARIO')")
-    @DeleteMapping("/{idReceta}")
-    public ResponseEntity<?> deleteReceta(@PathVariable Long idReceta){
-        consejoService.deleteConsejo(idReceta);
+    @DeleteMapping("/{idConsejo}")
+    public ResponseEntity<?> deleteConsejo(@PathVariable Long idConsejo){
+        consejoService.deleteConsejo(idConsejo);
         return ResponseEntity.ok("OK");
     }
 
