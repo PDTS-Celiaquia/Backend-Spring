@@ -1,6 +1,6 @@
 START TRANSACTION;
 
-CREATE TABLE "celiaquia"."tips"
+CREATE TABLE "celiaquia"."consejos"
 (
     "id"     int8 NOT NULL,
     "titulo" varchar(255) NOT NULL,

@@ -14,11 +14,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "tips")
+@Table(name = "consejos")
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Tip {
+public class Consejo {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private long id;
